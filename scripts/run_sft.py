@@ -23,6 +23,8 @@ import sys
 
 import datasets
 import torch
+import torch_xla
+import torch_xla.core.xla_model as xm
 import transformers
 from transformers import set_seed
 
@@ -42,7 +44,17 @@ from alignment import (
 from trl import SFTTrainer
 
 
+# Set up TPU device.
+device = xm.xla_device()
 logger = logging.getLogger(__name__)
+
+# Set up the FSDP config. To enable FSDP via SPMD, set xla_fsdp_v2 to True.
+fsdp_config = {"fsdp_transformer_layer_cls_to_wrap": [
+        "GemmaDecoderLayer"
+    ],
+    "xla": True,
+    "xla_fsdp_v2": True,
+    "xla_fsdp_grad_ckpt": True}
 
 
 def main():
@@ -145,6 +157,9 @@ def main():
         max_seq_length=training_args.max_seq_length,
         tokenizer=tokenizer,
         packing=True,
+        dataloader_drop_last = True,  # Required for SPMD.
+        fsdp="full_shard",
+        fsdp_config=fsdp_config,
         peft_config=get_peft_config(model_args),
     )
 
