@@ -1,5 +1,5 @@
 # Model arguments
-model_name_or_path: google/gemma-2b
+model_name_or_path: microsoft/phi-2
 model_revision: main
 torch_dtype: bfloat16
 
@@ -35,7 +35,7 @@ gradient_accumulation_steps: 2
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
-hub_model_id: gemma-2b-hi
+hub_model_id: phi-2-hi
 hub_strategy: every_save
 learning_rate: 2.0e-04
 log_level: info
@@ -45,7 +45,7 @@ lr_scheduler_type: cosine
 max_seq_length: 2048
 max_steps: -1
 num_train_epochs: 3
-output_dir: data/gemma-2b-hi
+output_dir: data/phi-2-hi
 overwrite_output_dir: true
 per_device_eval_batch_size: 8
 per_device_train_batch_size: 4
@@ -57,4 +57,3 @@ save_steps: 100
 save_total_limit: 1
 seed: 42
 warmup_ratio: 0.1
-optim: paged_adamw_32bit
