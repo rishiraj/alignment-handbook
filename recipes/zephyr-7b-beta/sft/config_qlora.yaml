@@ -24,6 +24,7 @@ dataset_mixer:
   rishiraj/samvaad-hi-v1: 1.0
 dataset_splits:
 - train
+- test
 preprocessing_num_workers: 12
 
 # SFT trainer config
