@@ -45,11 +45,12 @@ def apply_chat_template(
 ):
     if task in ["sft", "generation"]:
         messages = example["messages"]
-        # We add an empty system message if there is none
-        maybe_insert_system_message(messages, tokenizer)
-        example["text"] = tokenizer.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True if task == "generation" else False
-        )
+        if messages:
+            # We add an empty system message if there is none
+            maybe_insert_system_message(messages, tokenizer)
+            example["text"] = tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True if task == "generation" else False
+            )
     elif task == "rm":
         if all(k in example.keys() for k in ("chosen", "rejected")):
             chosen_messages = example["chosen"]
